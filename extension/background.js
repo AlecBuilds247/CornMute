@@ -2,6 +2,7 @@
 import { createCore } from './core.js';
 
 const core = createCore(chrome);
+globalThis.cornmute = core; // handy for debugging from the service-worker console
 
 const isMainFrame = (d) => d.frameId === 0 && d.documentLifecycle !== 'prerender';
 

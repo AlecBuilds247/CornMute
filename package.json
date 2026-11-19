@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/unit/",
+    "test": "node --test tests/unit/*.test.js",
     "test:e2e": "node tests/e2e/run.mjs",
     "icons": "node scripts/render-icons.mjs",
     "build": "bash scripts/build.sh"

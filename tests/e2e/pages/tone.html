@@ -1,0 +1,8 @@
+<!doctype html><meta charset="utf-8"><title>Tone test page</title>
+<h1>Fake test page: plays a tone</h1>
+<script>
+  const ctx = new AudioContext();
+  const o = ctx.createOscillator(); const g = ctx.createGain(); g.gain.value = 0.05;
+  o.frequency.value = 440; o.connect(g).connect(ctx.destination); o.start();
+  ctx.resume();
+</script>
