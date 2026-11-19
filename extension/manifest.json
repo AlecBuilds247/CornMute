@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "CornMute – Auto-Mute for NSFW Sites",
   "short_name": "CornMute",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Automatically mutes the tab the moment an adult / NSFW site starts loading, before any sound plays.",
   "permissions": ["webNavigation", "storage", "activeTab"],
   "background": { "service_worker": "background.js", "type": "module" },

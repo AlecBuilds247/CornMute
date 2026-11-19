@@ -1,6 +1,6 @@
 # CornMute – Chrome Web Store listing (copy & paste)
 
-Upload file: `release/cornmute-v1.0.1.zip`
+Upload file: `release/cornmute-v1.0.2.zip`
 
 ---
 
@@ -59,7 +59,7 @@ Questions or feedback: alecbuilds247@gmail.com
 - Store icon 128x128: `extension/icons/icon128.png`
 - Screenshots 1280x800, in this order:
   1. `1-muted-before-sound.png`
-  2. `2-my-sites.png` (regenerated for v1.0.1)
+  2. `2-my-sites.png`
   3. `3-incognito.png`
   4. `4-private.png`
 - Small promo tile 440x280: `promo-small-440x280.png`

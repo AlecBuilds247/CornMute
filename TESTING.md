@@ -1,7 +1,7 @@
 # CornMute – 10-minute test on your Mac
 
 **Setup (2 min)**
-1. Unzip `release/cornmute-v1.0.1.zip` into a folder (this is exactly what you'll upload).
+1. Unzip `release/cornmute-v1.0.2.zip` into a folder (this is exactly what you'll upload).
 2. Chrome → `chrome://extensions` → Developer mode ON → **Load unpacked** → pick that folder.
    - If AdHush or an older CornMute is loaded, that's fine. Remove any older CornMute first.
 
