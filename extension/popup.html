@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CornMute</title>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<header>
+  <img src="icons/icon48.png" alt="" width="28" height="28">
+  <strong>CornMute</strong>
+  <label class="switch" title="Turn CornMute on or off">
+    <input type="checkbox" id="enabled" aria-label="CornMute on or off">
+    <span></span>
+  </label>
+</header>
+
+<section class="card" id="tabCard">
+  <div id="status" class="status">Checking this tab…</div>
+  <div class="row">
+    <button id="toggleTab" class="primary">Unmute this tab</button>
+    <button id="addSite" hidden>Add this site</button>
+  </div>
+  <div id="siteNote" class="note muted-text"></div>
+</section>
+
+<section class="card counter">
+  <div id="count" class="big">0</div>
+  <div class="muted-text">awkward moments prevented</div>
+</section>
+
+<section class="card incognito">
+  <span>Incognito</span>
+  <span id="incogStatus" class="pill warn">Off</span>
+  <button id="incogFix" class="link" hidden>Fix</button>
+</section>
+
+<footer>
+  <span>Shortcut <kbd id="shortcut">Alt+Shift+M</kbd> <button id="changeShortcut" class="link">change</button></span>
+  <button id="openSites" class="link">My sites</button>
+</footer>
+<script type="module" src="popup.js"></script>
+</body>
+</html>
