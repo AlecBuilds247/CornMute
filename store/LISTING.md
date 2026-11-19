@@ -11,7 +11,7 @@ Upload file: `release/cornmute-v1.0.0.zip`
 CornMute – Auto-Mute for NSFW Sites
 ```
 
-**Summary** (from manifest, 113 chars)
+**Summary** (from manifest, 99 chars)
 ```
 Automatically mutes the tab the moment an adult / NSFW site starts loading, before any sound plays.
 ```

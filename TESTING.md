@@ -20,7 +20,7 @@
 - [ ] In the popup, turn CornMute **off**: muted demo tabs unmute instantly. Turn it back **on**.
 - [ ] Open an **Incognito** window → demo page: muted. Popup shows Incognito **On**.
 - [ ] Popup → **My sites**: paste `https://www.example.com/some/page` → it adds `example.com`. Remove it.
-- [ ] Mute some normal tab yourself (right-click tab → **Mute site** doesn't count; use the popup **Mute this tab** on e.g. google.com), navigate to another normal site: it **stays muted** (CornMute never undoes your mutes).
+- [ ] On `google.com`, popup → **Mute this tab**. Then go to another normal site in that tab: it **stays muted** (CornMute never undoes your own mutes).
 
 Anything wrong? Tell me which line failed and what you saw.
 
