@@ -1,8 +1,6 @@
 // CornMute core logic. Kept free of top-level chrome.* calls so tests can drive it with a fake API.
 import { BUILTIN_SITES } from './sites.js';
-import { cleanDomain, hostFromUrl, matchSite } from './domains.js';
-
-const BUILTIN_SET = new Set(BUILTIN_SITES);
+import { cleanDomain, hostFromUrl, matchSite, matchAdultTld } from './domains.js';
 
 // Per-tab state (kept in chrome.storage.session = memory only, cleared when Chrome closes).
 // Only the matched *listed domain* is kept, never the page URL.
@@ -19,16 +17,21 @@ function freshState() {
 export function createCore(chrome, opts = {}) {
   const errorSettleMs = opts.errorSettleMs ?? 300;
   const selfId = chrome.runtime.id;
+  const loadBlocklist = opts.loadBlocklist || (async () => []);
   const settings = { enabled: true, customSites: [], count: 0 };
-  let siteSet = new Set(BUILTIN_SET);
+  // Built-in = curated list (sites.js) + bundled open-source blocklist (blocklist.txt) + adult-only TLDs.
+  const builtinSet = new Set(BUILTIN_SITES);
+  let customSet = new Set();
   const tabs = new Map();
   const queues = new Map();
 
   function rebuildSites() {
-    siteSet = new Set([...BUILTIN_SET, ...settings.customSites]);
+    customSet = new Set(settings.customSites);
   }
 
   const ready = (async () => {
+    try { for (const d of await loadBlocklist()) builtinSet.add(d); }
+    catch (e) { console.warn('CornMute: blocklist failed to load, using curated list only', e); }
     const s = await chrome.storage.local.get(['enabled', 'customSites', 'count']);
     settings.enabled = s.enabled !== false;
     settings.customSites = Array.isArray(s.customSites) ? s.customSites : [];
@@ -93,8 +96,16 @@ export function createCore(chrome, opts = {}) {
     if (tab && mutedByUs(tab.mutedInfo)) await setMuted(tabId, false);
   }
 
+  function builtinMatch(host) {
+    return matchSite(host, builtinSet) || matchAdultTld(host);
+  }
+
+  function lookupHost(host) {
+    return builtinMatch(host) || matchSite(host, customSet);
+  }
+
   function lookup(url) {
-    return matchSite(hostFromUrl(url), siteSet);
+    return lookupHost(hostFromUrl(url));
   }
 
   // phase: 'start' (navigation began) or 'commit' (page is now in the tab, incl. after redirects)
@@ -213,7 +224,7 @@ export function createCore(chrome, opts = {}) {
     await ready;
     const domain = cleanDomain(input);
     if (!domain) return { ok: false, error: 'That doesn’t look like a website address.' };
-    if (BUILTIN_SET.has(domain)) return { ok: true, domain, already: 'builtin' };
+    if (builtinMatch(domain)) return { ok: true, domain, already: 'builtin' };
     if (!settings.customSites.includes(domain)) {
       settings.customSites = [...settings.customSites, domain].sort();
       rebuildSites();
@@ -248,13 +259,13 @@ export function createCore(chrome, opts = {}) {
     const tab = tabId != null ? await getTab(tabId) : null;
     const st = tabs.get(tabId) || freshState();
     const host = hostFromUrl(url);
-    const site = matchSite(host, siteSet);
+    const site = lookupHost(host);
     return {
       enabled: settings.enabled,
       count: settings.count,
       host: host ? host.replace(/^www\d*\./, '') : null,
       site,
-      builtin: !!site && BUILTIN_SET.has(site),
+      builtin: !!site && !!builtinMatch(host),
       muted: !!tab?.mutedInfo?.muted,
       mutedByCornMute: !!tab && st.ours && mutedByUs(tab.mutedInfo),
       unmutedByUser: !!site && st.unmutedSite === site,
@@ -267,7 +278,14 @@ export function createCore(chrome, opts = {}) {
       case 'toggleTab': await toggleTab(msg.tabId, msg.url); return getTabInfo(msg.tabId, msg.url);
       case 'addSite': return addSite(msg.domain, msg.tabId, msg.url);
       case 'removeSite': return removeSite(msg.domain);
-      case 'getSites': await ready; return { builtin: BUILTIN_SITES, custom: settings.customSites };
+      case 'getSites': await ready; return { builtinCount: builtinSet.size, custom: settings.customSites };
+      case 'checkSite': {
+        await ready;
+        const d = cleanDomain(msg.domain);
+        if (!d) return { ok: false, error: 'That doesn\u2019t look like a website address.' };
+        const by = builtinMatch(d) ? 'builtin' : matchSite(d, customSet) ? 'custom' : null;
+        return { ok: true, domain: d, by };
+      }
       default: return { ok: false, error: 'unknown message' };
     }
   }

@@ -1,7 +1,7 @@
 # CornMute – 10-minute test on your Mac
 
 **Setup (2 min)**
-1. Unzip `release/cornmute-v1.0.0.zip` into a folder (this is exactly what you'll upload).
+1. Unzip `release/cornmute-v1.0.1.zip` into a folder (this is exactly what you'll upload).
 2. Chrome → `chrome://extensions` → Developer mode ON → **Load unpacked** → pick that folder.
    - If AdHush or an older CornMute is loaded, that's fine. Remove any older CornMute first.
 
@@ -19,6 +19,7 @@
 - [ ] Open the demo page in a **new tab**: muted.
 - [ ] In the popup, turn CornMute **off**: muted demo tabs unmute instantly. Turn it back **on**.
 - [ ] Open an **Incognito** window → demo page: muted. Popup shows Incognito **On**.
+- [ ] **My sites** → "Is a site covered?" box: type `sex.com` → ✓ built-in. Type `sussex.ac.uk` → not covered. (Typing a name is fine; no need to visit.)
 - [ ] Popup → **My sites**: paste `https://www.example.com/some/page` → it adds `example.com`. Remove it.
 - [ ] On `google.com`, popup → **Mute this tab**. Then go to another normal site in that tab: it **stays muted** (CornMute never undoes your own mutes).
 

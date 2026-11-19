@@ -4,8 +4,9 @@ Chrome extension (MV3) that mutes a tab the moment an adult / NSFW site starts l
 
 | Folder | What |
 |---|---|
-| `extension/` | The extension source (load this unpacked). Built-in domains live only in `extension/sites.js`. |
-| `release/cornmute-v1.0.0.zip` | The exact file to upload to the Chrome Web Store. |
+| `extension/` | The extension source (load this unpacked). Curated domains: `extension/sites.js`. Open-source list: `extension/blocklist.txt` (generated). Adult TLDs: `extension/domains.js`. |
+| `data/exclude.txt` | False positives removed from the open-source list. |
+| `release/cornmute-v1.0.1.zip` | The exact file to upload to the Chrome Web Store. |
 | `store/` | `LISTING.md` (all store text) + screenshots and promo tile. |
 | `site/` | Website for the separate `cornmute-site` GitHub Pages repo (home, privacy, demo). |
 | `tests/` | Unit tests (fake Chrome API) and end-to-end test (real Chromium, fake local pages). |
@@ -15,3 +16,8 @@ Chrome extension (MV3) that mutes a tab the moment an adult / NSFW site starts l
 Permissions: `webNavigation`, `storage`, `activeTab`. No host permissions, no content scripts, no remote code.
 
 Dev: `npm test` · `npm run test:e2e` · `npm run build` (writes the release ZIP) · `node scripts/render-icons.mjs` · `node scripts/make-store-images.mjs`
+
+## Updating the built-in list (future versions)
+1. `npm run update-blocklist` (downloads the latest StevenBlack porn list, applies `data/exclude.txt`, writes `extension/blocklist.txt` + `blocklist-meta.json`)
+2. Bump `version` in `extension/manifest.json`
+3. `npm test` then `npm run build` → new ZIP in `release/`

@@ -14,9 +14,6 @@
   li:last-child { border-bottom: none; }
   #msg { min-height: 1.2em; font-size: 13px; }
   #msg.err { color: var(--danger); }
-  details summary { cursor: pointer; font-weight: 600; }
-  .builtin { columns: 2; font-size: 13px; margin-top: 10px; color: var(--muted); }
-  .builtin div { break-inside: avoid; }
   h2 { font-size: 16px; margin: 0 0 8px; }
 </style>
 </head>
@@ -41,10 +38,14 @@
   </section>
 
   <section class="card">
-    <details>
-      <summary>Built-in list (<span id="builtinCount">0</span> adult / NSFW sites, always on)</summary>
-      <div id="builtin" class="builtin"></div>
-    </details>
+    <h2>Built-in list <span class="pill ok">always on</span></h2>
+    <p style="margin:0 0 10px"><b id="builtinCount">0</b> adult / NSFW sites, plus every site on the adult-only <b>.xxx .porn .sex .adult</b> domains.</p>
+    <form id="checkForm">
+      <input type="text" id="checkDomain" placeholder="Is a site covered? Type or paste it here" autocomplete="off" spellcheck="false">
+      <button type="submit">Check</button>
+    </form>
+    <div id="checkMsg" class="muted-text" style="min-height:1.2em;font-size:13px;margin-top:6px"></div>
+    <p class="muted-text" style="font-size:12px;margin:10px 0 0">Built-in list includes the open-source <a href="https://github.com/StevenBlack/hosts" target="_blank" rel="noopener">StevenBlack/hosts</a> adult list (MIT / CC BY 4.0) — <a href="licenses/THIRD-PARTY-NOTICES.txt" target="_blank">credits</a>.</p>
   </section>
 </main>
 <script type="module" src="mysites.js"></script>

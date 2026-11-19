@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cleanDomain, hostFromUrl, matchSite } from '../../extension/domains.js';
+import { cleanDomain, hostFromUrl, matchSite, matchAdultTld } from '../../extension/domains.js';
 import { BUILTIN_SITES } from '../../extension/sites.js';
 
 test('cleanDomain turns links into bare domains', () => {
@@ -37,9 +37,20 @@ test('matchSite covers subdomains but not lookalikes', () => {
   assert.equal(matchSite(null, set), null);
 });
 
-test('built-in list is clean: valid, unique, lowercase, and excludes dmm.co.jp', () => {
+test('curated list is clean: valid, unique, lowercase, includes the must-haves', () => {
   assert.equal(new Set(BUILTIN_SITES).size, BUILTIN_SITES.length);
   for (const d of BUILTIN_SITES) assert.equal(cleanDomain(d), d, d);
-  assert.ok(!BUILTIN_SITES.includes('dmm.co.jp'));
-  assert.ok(BUILTIN_SITES.length >= 56);
+  for (const d of ['sex.com', 'dmm.co.jp', 'onlyfans.com', 'fansly.com', 'pornhub.com']) assert.ok(BUILTIN_SITES.includes(d), d);
+  assert.ok(!BUILTIN_SITES.includes('dmm.com'), 'dmm.com is the all-ages site');
+});
+
+test('adult-only TLDs match on the last label only', () => {
+  assert.equal(matchAdultTld('anything.xxx'), 'anything.xxx');
+  assert.equal(matchAdultTld('video.cdn.example.porn'), 'example.porn');
+  assert.equal(matchAdultTld('www.shop.sex'), 'shop.sex');
+  assert.equal(matchAdultTld('club.adult'), 'club.adult');
+  for (const h of ['sussex.ac.uk', 'essex.ac.uk', 'middlesex.edu', 'sexton.com', 'pornography-research.org',
+    'xxx.example.com', 'adult.example.com', 'sex.example.org', 'adultswim.com', 'xxxtentacion.com', 'xxx', null]) {
+    assert.equal(matchAdultTld(h), null, String(h));
+  }
 });

@@ -77,6 +77,17 @@ try {
     assert.match(await welcome.textContent('#incog'), /Not allowed yet/);
   });
 
+  await step('bundled blocklist and adult TLDs load inside the real extension', async () => {
+    const r = await sw.evaluate(async () => ({
+      list: (await globalThis.cornmute.getTabInfo(null, 'https://www.erome.com/a/x')).builtin,
+      tld: (await globalThis.cornmute.getTabInfo(null, 'https://foo.bar.porn/')).builtin,
+      fp: (await globalThis.cornmute.getTabInfo(null, 'https://www.sussex.ac.uk/')).site,
+      count: (await globalThis.cornmute.onMessage({ type: 'getSites' })).builtinCount,
+    }));
+    assert.deepEqual([r.list, r.tld, r.fp], [true, true, null]);
+    assert.ok(r.count > 40000, String(r.count));
+  });
+
   await step('My sites: pasting a full link adds the clean domain', async () => {
     const p = await ctx.newPage();
     await p.goto(`chrome-extension://${extId}/sites.html`);

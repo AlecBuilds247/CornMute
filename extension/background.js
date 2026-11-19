@@ -1,7 +1,13 @@
 // CornMute service worker: wires Chrome events to the core logic.
 import { createCore } from './core.js';
 
-const core = createCore(chrome);
+// The bundled blocklist ships inside the extension (no downloads, no remote code).
+async function loadBlocklist() {
+  const text = await (await fetch(chrome.runtime.getURL('blocklist.txt'))).text();
+  return text.split('\n').filter(Boolean);
+}
+
+const core = createCore(chrome, { loadBlocklist });
 globalThis.cornmute = core; // handy for debugging from the service-worker console
 
 const isMainFrame = (d) => d.frameId === 0 && d.documentLifecycle !== 'prerender';

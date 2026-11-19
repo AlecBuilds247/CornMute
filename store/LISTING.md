@@ -1,6 +1,6 @@
 # CornMute – Chrome Web Store listing (copy & paste)
 
-Upload file: `release/cornmute-v1.0.0.zip`
+Upload file: `release/cornmute-v1.0.1.zip`
 
 ---
 
@@ -32,8 +32,11 @@ HOW IT WORKS
 WORKS IN INCOGNITO
 Chrome's built-in "Mute site" setting isn't remembered in Incognito. CornMute is. Allow it in Incognito once (the welcome page shows you how) and you're covered.
 
+TENS OF THOUSANDS OF ADULT SITES, BUILT IN
+CornMute ships with a built-in list of tens of thousands of adult / NSFW sites: mainstream video sites, creator and cam platforms, Japanese, Chinese and anime adult sites, and more. Every site on the adult-only .xxx, .porn, .sex and .adult domains is covered automatically. The list is stored inside the extension and checked on your device; nothing is downloaded while you browse.
+
 YOUR OWN LIST
-CornMute comes with a built-in list of popular adult / NSFW sites. Add any other site under "My sites". Paste a full link and CornMute cleans it into a domain; subdomains are covered automatically.
+Add any other site under "My sites". Paste a full link and CornMute cleans it into a domain; subdomains are covered automatically. You can also check whether a site is already covered.
 
 "AWKWARD MOMENTS PREVENTED"
 A small counter in the popup goes up each time a muted page actually tried to play sound.
@@ -43,6 +46,8 @@ PRIVATE BY DESIGN
 • Page addresses are checked on your device and never stored or sent.
 • No site names appear in Chrome's install prompt: CornMute asks for no website access.
 • No content scripts and no remote code: CornMute never reads or changes the pages you visit.
+
+Built-in list includes the open-source StevenBlack/hosts adult list (MIT / CC BY 4.0). Full credits are inside the extension.
 
 Questions or feedback: alecbuilds247@gmail.com
 ```
@@ -54,7 +59,7 @@ Questions or feedback: alecbuilds247@gmail.com
 - Store icon 128x128: `extension/icons/icon128.png`
 - Screenshots 1280x800, in this order:
   1. `1-muted-before-sound.png`
-  2. `2-my-sites.png`
+  2. `2-my-sites.png` (regenerated for v1.0.1)
   3. `3-incognito.png`
   4. `4-private.png`
 - Small promo tile 440x280: `promo-small-440x280.png`
@@ -71,12 +76,12 @@ Questions or feedback: alecbuilds247@gmail.com
 
 **Single purpose description**
 ```
-CornMute has one purpose: it automatically mutes a browser tab as soon as a page on an adult / NSFW site (from its built-in list or the user's own list) starts loading, so no sound plays until the user chooses to unmute.
+CornMute has one purpose: it automatically mutes a browser tab as soon as a page on an adult / NSFW site (from its bundled built-in list, the adult-only .xxx/.porn/.sex/.adult domains, or the user's own list) starts loading, so no sound plays until the user chooses to unmute.
 ```
 
 **Permission justification: webNavigation**
 ```
-Used to detect the moment a tab starts navigating to a new page, so CornMute can compare the site's domain against the user's list and mute the tab before any sound plays. Also used to detect when the tab leaves a listed site so CornMute can restore sound it muted. The address is checked on-device only and is never stored or transmitted.
+Used to detect the moment a tab starts navigating to a new page, so CornMute can compare the site's domain against its built-in list (bundled in the extension) and the user's list, and mute the tab before any sound plays. Also used to detect when the tab leaves a listed site so CornMute can restore sound it muted. The address is checked on-device only and is never stored or transmitted.
 ```
 
 **Permission justification: storage**
@@ -91,7 +96,7 @@ When the user opens the CornMute popup or presses its keyboard shortcut, activeT
 
 **Are you using remote code?** No, I am not using remote code.
 ```
-All JavaScript is included in the extension package. CornMute loads no external scripts, uses no eval, and has no content scripts.
+All JavaScript is included in the extension package. CornMute loads no external scripts, uses no eval, and has no content scripts. Its site list (blocklist.txt) is a plain data file bundled in the package; it is never downloaded or updated remotely.
 ```
 
 **Data usage – what user data do you collect?**

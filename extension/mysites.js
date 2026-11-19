@@ -9,7 +9,7 @@ function showMsg(text, isErr) {
 }
 
 async function render() {
-  const { builtin, custom } = await send({ type: 'getSites' });
+  const { builtinCount, custom } = await send({ type: 'getSites' });
   const ul = $('custom');
   ul.innerHTML = '';
   for (const d of custom) {
@@ -22,10 +22,17 @@ async function render() {
   }
   $('empty').hidden = custom.length > 0;
   $('customCount').textContent = custom.length ? `(${custom.length})` : '';
-  $('builtinCount').textContent = builtin.length;
-  $('builtin').innerHTML = '';
-  for (const d of builtin) { const div = document.createElement('div'); div.textContent = d; $('builtin').append(div); }
+  $('builtinCount').textContent = builtinCount.toLocaleString();
 }
+
+$('checkForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const res = await send({ type: 'checkSite', domain: $('checkDomain').value });
+  $('checkMsg').textContent = !res.ok ? res.error
+    : res.by === 'builtin' ? `✓ ${res.domain} is on the built-in list.`
+    : res.by === 'custom' ? `✓ ${res.domain} is on your list.`
+    : `${res.domain} isn’t covered. Add it above to mute it on arrival.`;
+});
 
 $('domain').addEventListener('input', () => {
   const raw = $('domain').value.trim();

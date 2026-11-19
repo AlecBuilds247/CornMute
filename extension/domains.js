@@ -25,7 +25,12 @@ export function hostFromUrl(url) {
   } catch { return null; }
 }
 
-// Returns the listed domain that covers `host` (the domain itself or any subdomain), or null.
+// Top-level domains that exist only for adult content. Every site on them counts as listed.
+// Matched on the LAST label only, so "sussex.ac.uk" or "sexton.com" never match.
+export const ADULT_TLDS = new Set(['xxx', 'porn', 'sex', 'adult']);
+
+// Returns the listed domain that covers `host` (the domain itself or any parent domain), or null.
+// One Set lookup per label, so it stays fast however big the list is.
 export function matchSite(host, siteSet) {
   if (!host) return null;
   const labels = host.split('.');
@@ -34,4 +39,12 @@ export function matchSite(host, siteSet) {
     if (siteSet.has(candidate)) return candidate;
   }
   return null;
+}
+
+// Adult-only TLD match: "video.example.xxx" -> "example.xxx".
+export function matchAdultTld(host) {
+  if (!host) return null;
+  const labels = host.split('.');
+  if (labels.length < 2 || !ADULT_TLDS.has(labels[labels.length - 1])) return null;
+  return labels.slice(-2).join('.');
 }

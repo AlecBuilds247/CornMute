@@ -43,11 +43,11 @@ async function shoot(file, { w, h, init, selector, scale = 2, name, colorScheme 
   return 'data:image/png;base64,' + readFileSync(p).toString('base64');
 }
 
-const builtin = { builtin: Array.from({ length: 58 }, (_, i) => `adult-site-${i + 1}.example`), custom: [] };
+const builtin = { builtinCount: 46987, custom: [] };
 const popupMuted = await shoot(ext('popup.html'), { w: 344, h: 520, name: 'popup.png', selector: 'body',
   init: stub({ enabled: true, count: 27, host: 'video.example-nsfw.com', site: 'example-nsfw.com', builtin: false, muted: true, mutedByCornMute: true, unmutedByUser: false }, builtin, true) });
-const sitesPage = await shoot(ext('sites.html'), { w: 760, h: 640, name: 'sites.png',
-  init: stub({}, { builtin: builtin.builtin, custom: ['example-nsfw.com', 'my-other-site.net', 'videos.example.org'] }, true),
+const sitesPage = await shoot(ext('sites.html'), { w: 760, h: 740, name: 'sites.png',
+  init: stub({}, { builtinCount: builtin.builtinCount, custom: ['example-nsfw.com', 'my-other-site.net', 'videos.example.org'] }, true),
   before: async (p) => { await p.waitForSelector('#custom li'); await p.fill('#domain', 'https://www.paste-any-link.com/watch?v=123'); await p.dispatchEvent('#domain', 'input'); } });
 const welcomePage = await shoot(ext('welcome.html'), { w: 760, h: 640, name: 'welcome.png', init: stub({}, builtin, false) });
 
@@ -100,7 +100,7 @@ async function render(html, w, h, file) {
 }
 
 await render(browserMock, 1280, 800, '1-muted-before-sound.png');
-await render(frame('Your list, your rules.', 'Add any site in seconds. Paste a full link and CornMute cleans it into a domain. Subdomains are covered automatically.', sitesPage, 620), 1280, 800, '2-my-sites.png');
+await render(frame('Tens of thousands of sites.', 'Tens of thousands of adult sites built in, plus every .xxx .porn .sex and .adult site. Add your own in seconds — paste any link.', sitesPage, 620), 1280, 800, '2-my-sites.png');
 await render(frame('Works in Incognito.', 'Chrome’s built-in “Mute site” isn’t remembered in Incognito. CornMute is — allow it once and you’re covered.', welcomePage, 620), 1280, 800, '3-incognito.png');
 await render(frame('Private by design.', 'No accounts. No analytics. Addresses are checked on your device and never stored or sent. Unmute anytime with one click or ⌥⇧M.', popupMuted, 330), 1280, 800, '4-private.png');
 

@@ -1,12 +1,13 @@
 {
   "name": "cornmute",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "scripts": {
     "test": "node --test tests/unit/*.test.js",
     "test:e2e": "node tests/e2e/run.mjs",
     "icons": "node scripts/render-icons.mjs",
-    "build": "bash scripts/build.sh"
+    "build": "bash scripts/build.sh",
+    "update-blocklist": "node scripts/update-blocklist.mjs"
   }
 }

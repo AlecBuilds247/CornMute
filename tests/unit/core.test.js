@@ -221,3 +221,31 @@ test('only the matched domain is kept in tab state, never the URL', async () => 
   assert.ok(!JSON.stringify(f.store).includes('view?x=1'));
   assert.ok(!JSON.stringify(f.store).includes('www.pornhub'));
 });
+
+test('any site on an adult-only TLD is muted; lookalike domains are not', async () => {
+  const { f, core } = await setup();
+  await nav(core, 1, 'https://video.some-new-site.porn/watch');
+  assert.equal(f.isMuted(1), true);
+  f.addTab(2);
+  await nav(core, 2, 'https://www.sussex.ac.uk/');
+  assert.equal(f.isMuted(2), false);
+  assert.equal((await core.addSite('whatever.xxx')).already, 'builtin');
+});
+
+test('checkSite reports built-in, custom and uncovered domains', async () => {
+  const { core } = await setup();
+  await core.addSite('my-site.dev');
+  assert.equal((await core.onMessage({ type: 'checkSite', domain: 'https://www.sex.com/x' })).by, 'builtin');
+  assert.equal((await core.onMessage({ type: 'checkSite', domain: 'a.my-site.dev' })).by, 'custom');
+  assert.equal((await core.onMessage({ type: 'checkSite', domain: 'sussex.ac.uk' })).by, null);
+  assert.equal((await core.onMessage({ type: 'checkSite', domain: 'nope' })).ok, false);
+});
+
+test('a broken blocklist load falls back to the curated list', async () => {
+  const f = fakeChrome();
+  const core = createCore(f.chrome, { loadBlocklist: async () => { throw new Error('boom'); } });
+  await core.ready;
+  f.addTab(1);
+  await nav(core, 1, 'https://pornhub.com/');
+  assert.equal(f.isMuted(1), true);
+});

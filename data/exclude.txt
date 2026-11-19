@@ -1,0 +1,8 @@
+# Domains removed from the downloaded blocklist (false positives / mixed-content sites).
+# One per line. Removes the domain AND any subdomains of it from the built-in list.
+# (Your own "My sites" entries and the curated list in extension/sites.js are never removed.)
+m.vk.com
+my.mail.ru
+4chan.org
+pics.dmm.com
+stat.i3.dmm.com
