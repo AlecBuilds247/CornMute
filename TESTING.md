@@ -23,7 +23,7 @@
 - [ ] Open an **Incognito** window → demo page: muted. Popup shows Incognito **On**.
 - [ ] **Muted sites** → "Is a site covered?" box: type `sex.com` → ✓ built-in. Type `sussex.ac.uk` → not covered. (Typing a name is fine; no need to visit.)
 - [ ] Popup on a new tab page: **Nothing to mute here**, no Mute button.
-- [ ] Popup footer: only **Privacy Policy** (opens the privacy page). Muted sites page footer: **Privacy Policy · Made by @AlecBuilds247** (review link appears there once the store item ID is set).
+- [ ] Popup footer: only **Privacy Policy** (opens the privacy page). Muted sites page footer: **Privacy Policy · Made by @AlecBuilds247 (just for funzies)** (review link appears there once the store item ID is set).
 - [ ] Popup → **Muted sites**: paste `https://www.example.com/some/page` → it adds `example.com`. Remove it.
 - [ ] On `google.com`, popup → **Mute this tab**. Then go to another normal site in that tab: it **stays muted** (CornMute never undoes your own mutes).
 

@@ -70,7 +70,8 @@ test('footers: popup = Privacy Policy only; Muted sites = Privacy Policy, review
   const popupFooter = popup.slice(popup.indexOf('class="credits'));
   assert.match(popupFooter, /Privacy Policy/);
   assert.doesNotMatch(popupFooter, /AlecBuilds247|Tell me|review/i);
-  assert.match(sites, /Privacy Policy[\s\S]*Leave a review ★[\s\S]*@AlecBuilds247/);
+  assert.match(sites, /Privacy Policy[\s\S]*Leave a review ★[\s\S]*@AlecBuilds247<\/a> \(just for funzies\)/);
+  assert.doesNotMatch(popup, /funzies/);
   for (const html of [popup, sites]) assert.doesNotMatch(html, /Tell me/);
   assert.doesNotMatch(welcome, /review/i);
 });
