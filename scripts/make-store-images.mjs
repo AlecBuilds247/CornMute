@@ -24,7 +24,7 @@ const stub = (tabInfo, sites, incognito) => `
   window.chrome = {
     runtime: { id: 'x', sendMessage: async (m) => m.type === 'getSites' ? ${JSON.stringify(sites)} : ${JSON.stringify(tabInfo)}, openOptionsPage(){} },
     tabs: { query: async () => [{ id: 1, url: 'https://example.com/' }], create(){} },
-    storage: { local: { set: async () => {} }, onChanged: { addListener(){} } },
+    storage: { local: { set: async () => {}, get: async () => ({}) }, onChanged: { addListener(){} } },
     commands: { getAll: async () => [{ name: 'toggle-mute-tab', shortcut: '⌥⇧M' }] },
     extension: { isAllowedIncognitoAccess: (cb) => cb(${incognito}) },
   };`;
@@ -44,9 +44,9 @@ async function shoot(file, { w, h, init, selector, scale = 2, name, colorScheme 
 }
 
 const builtin = { builtinCount: 46987, custom: [] };
-const popupMuted = await shoot(ext('popup.html'), { w: 344, h: 520, name: 'popup.png', selector: 'body',
-  init: stub({ enabled: true, count: 27, host: 'video.example-nsfw.com', site: 'example-nsfw.com', builtin: false, muted: true, mutedByCornMute: true, unmutedByUser: false }, builtin, true) });
-const sitesPage = await shoot(ext('sites.html'), { w: 760, h: 740, name: 'sites.png',
+const popupMuted = await shoot(ext('popup.html'), { w: 344, h: 560, name: 'popup.png', selector: 'body',
+  init: stub({ enabled: true, count: 27, builtinCount: builtin.builtinCount, host: 'video.example-nsfw.com', site: 'example-nsfw.com', builtin: true, muted: true, mutedByCornMute: true, unmutedByUser: false }, builtin, true) });
+const sitesPage = await shoot(ext('sites.html'), { w: 760, h: 790, name: 'sites.png',
   init: stub({}, { builtinCount: builtin.builtinCount, custom: ['example-nsfw.com', 'my-other-site.net', 'videos.example.org'] }, true),
   before: async (p) => { await p.waitForSelector('#custom li'); await p.fill('#domain', 'https://www.paste-any-link.com/watch?v=123'); await p.dispatchEvent('#domain', 'input'); } });
 const welcomePage = await shoot(ext('welcome.html'), { w: 760, h: 640, name: 'welcome.png', init: stub({}, builtin, false) });

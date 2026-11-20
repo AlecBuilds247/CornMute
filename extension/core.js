@@ -263,6 +263,7 @@ export function createCore(chrome, opts = {}) {
     return {
       enabled: settings.enabled,
       count: settings.count,
+      builtinCount: builtinSet.size,
       host: host ? host.replace(/^www\d*\./, '') : null,
       site,
       builtin: !!site && !!builtinMatch(host),

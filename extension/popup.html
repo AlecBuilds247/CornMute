@@ -17,29 +17,41 @@
 </header>
 
 <section class="card" id="tabCard">
-  <div id="status" class="status">Checking this tab…</div>
-  <div class="row">
-    <button id="toggleTab" class="primary">Unmute this tab</button>
-    <button id="addSite" hidden>Add this site</button>
+  <div class="status-block">
+    <div id="status" class="status">Checking this tab…</div>
+    <div id="statusSub" class="sub muted-text"></div>
   </div>
-  <div id="siteNote" class="note muted-text"></div>
+  <button id="toggleTab" class="primary wide">Unmute this tab</button>
+  <div class="add-row"><button id="addLink" class="link small" hidden>Missing an adult site? Add it to your list →</button></div>
 </section>
 
 <section class="card counter">
   <div id="count" class="big">0</div>
   <div class="muted-text">awkward moments prevented</div>
+  <div id="review" class="review" hidden>
+    <a id="reviewLink" href="#" target="_blank" rel="noopener">Enjoying CornMute? Leave a review ★</a>
+    <button id="reviewDismiss" class="x" aria-label="Hide review link" title="Hide">×</button>
+  </div>
 </section>
 
 <section class="card incognito">
-  <span>Incognito</span>
-  <span id="incogStatus" class="pill warn">Off</span>
-  <button id="incogFix" class="link" hidden>Fix</button>
+  <div class="incog-row">
+    <span>Incognito</span>
+    <span id="incogStatus" class="pill warn">Off</span>
+    <button id="incogFix" class="link" hidden>Fix</button>
+  </div>
+  <div id="incogHint" class="hint muted-text" hidden></div>
 </section>
 
 <footer>
   <span>Shortcut <kbd id="shortcut">Alt+Shift+M</kbd> <button id="changeShortcut" class="link">change</button></span>
-  <button id="openSites" class="link">My sites</button>
+  <button id="openSites" class="link">Muted sites</button>
 </footer>
+<div class="credits muted-text">
+  <a id="privacyLink" target="_blank" rel="noopener">Privacy</a> ·
+  Made by <a class="xLink" target="_blank" rel="noopener">@AlecBuilds247</a> ·
+  Missing a site? <a class="xLink" target="_blank" rel="noopener">Tell me</a>
+</div>
 <script type="module" src="popup.js"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@
     --ok-bg: #1f3320; --ok: #9fd99a; --warn-bg: #3a2f12; --warn: #f2c96b; --accent: #8fd18a; }
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.45; }
 button { font: inherit; cursor: pointer; border-radius: 9px; border: 1px solid var(--line); background: var(--card); color: var(--text); padding: 8px 12px; }
 button:hover { border-color: var(--corn-dark); }

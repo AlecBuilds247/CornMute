@@ -1,6 +1,6 @@
 # CornMute – Chrome Web Store listing (copy & paste)
 
-Upload file: `release/cornmute-v1.0.2.zip`
+Upload file: `release/cornmute-v1.0.3.zip`
 
 ---
 
@@ -36,7 +36,7 @@ TENS OF THOUSANDS OF ADULT SITES, BUILT IN
 CornMute ships with a built-in list of tens of thousands of adult / NSFW sites: mainstream video sites, creator and cam platforms, Japanese, Chinese and anime adult sites, and more. Every site on the adult-only .xxx, .porn, .sex and .adult domains is covered automatically. The list is stored inside the extension and checked on your device; nothing is downloaded while you browse.
 
 YOUR OWN LIST
-Add any other site under "My sites". Paste a full link and CornMute cleans it into a domain; subdomains are covered automatically. You can also check whether a site is already covered.
+Add any other site under "Muted sites". Paste a full link and CornMute cleans it into a domain; subdomains are covered automatically. You can also check whether a site is already covered.
 
 "AWKWARD MOMENTS PREVENTED"
 A small counter in the popup goes up each time a muted page actually tried to play sound.
@@ -86,12 +86,12 @@ Used to detect the moment a tab starts navigating to a new page, so CornMute can
 
 **Permission justification: storage**
 ```
-Stores, on the user's device only: the on/off setting, the sites the user added under "My sites", and a single counter number. While Chrome is open, it also keeps (in memory-only session storage) which tabs CornMute muted, recorded by matching listed domain only, never by page address. Nothing is synced or sent.
+Stores, on the user's device only: the on/off setting, the sites the user added under "Muted sites", a single counter number, and whether the user hid the "leave a review" link. While Chrome is open, it also keeps (in memory-only session storage) which tabs CornMute muted, recorded by matching listed domain only, never by page address. Nothing is synced or sent.
 ```
 
 **Permission justification: activeTab**
 ```
-When the user opens the CornMute popup or presses its keyboard shortcut, activeTab gives temporary access to the current tab's address so CornMute can show whether that site is on the list, mute/unmute that tab, and offer "Add this site". This avoids requesting any host permissions.
+When the user opens the CornMute popup or presses its keyboard shortcut, activeTab gives temporary access to the current tab's address so CornMute can show whether that site is on the list, mute/unmute that tab, and offer to add the site to the Muted sites list. This avoids requesting any host permissions.
 ```
 
 **Are you using remote code?** No, I am not using remote code.
@@ -130,7 +130,7 @@ No adult site is needed to test CornMute. Use the harmless demo page, which only
 
 1. Install CornMute. A welcome page opens explaining how to allow it in Incognito (optional).
 2. Open https://alecbuilds247.github.io/cornmute-site/demo.html
-3. Click the CornMute toolbar button and click "Add this site" (or right-click the button > Options > "My sites" and add alecbuilds247.github.io).
+3. Click the CornMute toolbar button, then the link "Missing an adult site? Add it to your list". The Muted sites page opens with alecbuilds247.github.io filled in; click Add.
 4. Reload the demo page. The tab starts MUTED: Chrome shows the muted speaker icon on the tab, and the popup says "Muted by CornMute".
 5. Click "Play test tone" on the page. Nothing is heard, and the popup counter "awkward moments prevented" goes up by 1.
 6. In the popup click "Unmute this tab" (or press Alt+Shift+M). The tone is now audible. Reloading the page keeps it unmuted (same site).

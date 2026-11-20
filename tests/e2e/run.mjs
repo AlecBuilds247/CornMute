@@ -88,7 +88,7 @@ try {
     assert.ok(r.count > 40000, String(r.count));
   });
 
-  await step('My sites: pasting a full link adds the clean domain', async () => {
+  await step('Muted sites: pasting a full link adds the clean domain', async () => {
     const p = await ctx.newPage();
     await p.goto(`chrome-extension://${extId}/sites.html`);
     await p.fill('#domain', 'https://www.cornmute-listed.test/some/video?id=9');
@@ -183,6 +183,22 @@ try {
     await p.waitForFunction(() => !document.getElementById('status').textContent.includes('Checking'));
     assert.match(await p.textContent('#shortcut'), /M/);
     assert.match(await p.textContent('#count'), /\d/);
+    assert.match(await p.textContent('#status'), /Watching \d{2},\d{3} adult sites/);
+    assert.equal(await p.isVisible('#incogHint'), true, 'Incognito hint should show while Incognito is off');
+    assert.match(await p.textContent('#incogHint'), /Click “Fix”/);
+    assert.equal(await p.isVisible('#review'), false, 'review link hidden while item ID is a placeholder');
+    assert.equal(await p.getAttribute('#privacyLink', 'href'), 'https://alecbuilds247.github.io/cornmute-site/privacy.html');
+    assert.equal(await p.getAttribute('.xLink', 'href'), 'https://x.com/AlecBuilds247');
+    assert.match(await p.textContent('#openSites'), /Muted sites/);
+    await p.close();
+  });
+
+  await step('popup "add it to your list" link opens Muted sites prefilled', async () => {
+    const p = await ctx.newPage();
+    await p.goto(`chrome-extension://${extId}/sites.html?add=video.some-site.test`);
+    assert.equal(await p.inputValue('#domain'), 'video.some-site.test');
+    assert.equal(await p.evaluate(() => document.activeElement.id), 'domain');
+    assert.equal(await p.title(), 'CornMute – Muted sites');
     await p.close();
   });
 } finally {

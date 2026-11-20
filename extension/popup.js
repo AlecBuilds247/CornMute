@@ -1,39 +1,31 @@
 import { cleanDomain } from './domains.js';
+import { statusCopy, incognitoHint } from './popup-copy.js';
+import { LINKS, reviewUrl, shouldShowReview } from './config.js';
 
 const $ = (id) => document.getElementById(id);
 let tab = null;
+let shortcut = '';
+let reviewDismissed = false;
 
 const send = (msg) => chrome.runtime.sendMessage(msg);
 
 function render(info) {
   document.body.classList.toggle('off', !info.enabled);
   $('enabled').checked = info.enabled;
-  $('count').textContent = info.count.toLocaleString();
+  $('count').textContent = info.count.toLocaleString('en-US');
 
-  const status = $('status');
-  const note = $('siteNote');
-  let icon, text;
-  if (!info.enabled) { icon = '⏸'; text = 'CornMute is off'; }
-  else if (info.mutedByCornMute) { icon = '🔇'; text = 'Muted by CornMute'; }
-  else if (info.unmutedByUser) { icon = '🔈'; text = 'Unmuted by you — stays unmuted while this tab is on this site'; }
-  else if (info.muted) { icon = '🔇'; text = 'This tab is muted'; }
-  else if (info.site) { icon = '🌽'; text = 'This site is on your list'; }
-  else { icon = '🌽'; text = 'Not on your list — CornMute won’t touch this tab'; }
-  status.innerHTML = '';
-  const dot = document.createElement('span'); dot.className = 'dot'; dot.textContent = icon;
-  const label = document.createElement('span'); label.textContent = text;
-  status.append(dot, label);
+  const copy = statusCopy(info, shortcut);
+  $('status').textContent = (copy.icon ? copy.icon + ' ' : '') + copy.title;
+  $('statusSub').textContent = copy.sub;
 
   $('toggleTab').textContent = info.muted ? 'Unmute this tab' : 'Mute this tab';
   $('toggleTab').disabled = !tab;
 
-  const add = $('addSite');
-  const candidate = info.host ? cleanDomain(info.host) : null;
-  add.hidden = !!info.site || !candidate;
-  add.dataset.domain = candidate || '';
-  if (info.site) note.textContent = info.builtin ? 'Built-in site — always muted on arrival.' : `On your list: ${info.site}`;
-  else if (candidate) note.textContent = `Add ${candidate} to mute it on arrival.`;
-  else note.textContent = '';
+  const domain = info.host ? cleanDomain(info.host) : null;
+  $('addLink').hidden = !(copy.addLink && domain);
+  $('addLink').dataset.domain = domain || '';
+
+  $('review').hidden = !shouldShowReview(info.count, reviewDismissed);
 }
 
 async function refresh() {
@@ -42,16 +34,24 @@ async function refresh() {
 
 async function init() {
   [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  ({ reviewDismissed = false } = await chrome.storage.local.get('reviewDismissed'));
 
   chrome.extension.isAllowedIncognitoAccess((allowed) => {
     $('incogStatus').textContent = allowed ? 'On' : 'Off';
     $('incogStatus').className = 'pill ' + (allowed ? 'ok' : 'warn');
     $('incogFix').hidden = allowed;
+    $('incogHint').textContent = incognitoHint(allowed);
+    $('incogHint').hidden = allowed;
   });
 
   const cmds = await chrome.commands.getAll();
-  const cmd = cmds.find((c) => c.name === 'toggle-mute-tab');
-  $('shortcut').textContent = cmd?.shortcut || 'not set';
+  shortcut = cmds.find((c) => c.name === 'toggle-mute-tab')?.shortcut || 'not set';
+  $('shortcut').textContent = shortcut;
+
+  $('privacyLink').href = LINKS.privacy;
+  for (const a of document.querySelectorAll('.xLink')) a.href = LINKS.x;
+  const rUrl = reviewUrl();
+  if (rUrl) $('reviewLink').href = rUrl;
 
   $('enabled').addEventListener('change', async (e) => {
     await chrome.storage.local.set({ enabled: e.target.checked });
@@ -60,10 +60,14 @@ async function init() {
   $('toggleTab').addEventListener('click', async () => {
     render(await send({ type: 'toggleTab', tabId: tab.id, url: tab.url }));
   });
-  $('addSite').addEventListener('click', async (e) => {
-    const res = await send({ type: 'addSite', domain: e.target.dataset.domain, tabId: tab?.id, url: tab?.url });
-    if (!res.ok) $('siteNote').textContent = res.error;
-    await refresh();
+  $('addLink').addEventListener('click', (e) => {
+    const d = e.currentTarget.dataset.domain;
+    chrome.tabs.create({ url: chrome.runtime.getURL('sites.html') + (d ? `?add=${encodeURIComponent(d)}` : '') });
+  });
+  $('reviewDismiss').addEventListener('click', async () => {
+    reviewDismissed = true;
+    $('review').hidden = true;
+    await chrome.storage.local.set({ reviewDismissed: true });
   });
   $('incogFix').addEventListener('click', () => chrome.tabs.create({ url: `chrome://extensions/?id=${chrome.runtime.id}` }));
   $('changeShortcut').addEventListener('click', () => chrome.tabs.create({ url: 'chrome://extensions/shortcuts' }));

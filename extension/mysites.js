@@ -1,4 +1,5 @@
 import { cleanDomain } from './domains.js';
+import { LINKS } from './config.js';
 
 const $ = (id) => document.getElementById(id);
 const send = (msg) => chrome.runtime.sendMessage(msg);
@@ -49,6 +50,17 @@ $('addForm').addEventListener('submit', async (e) => {
   $('domain').value = '';
   render();
 });
+
+$('privacyLink').href = LINKS.privacy;
+for (const a of document.querySelectorAll('.xLink')) a.href = LINKS.x;
+
+// Opened from the popup's "Missing an adult site?" link: prefill and focus the add box.
+const prefill = cleanDomain(new URLSearchParams(location.search).get('add'));
+if (prefill) {
+  $('domain').value = prefill;
+  showMsg(`Click Add to mute ${prefill} on arrival.`);
+}
+$('domain').focus();
 
 chrome.storage.onChanged.addListener((c, area) => { if (area === 'local' && c.customSites) render(); });
 render();
