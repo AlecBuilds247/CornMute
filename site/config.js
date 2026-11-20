@@ -1,5 +1,5 @@
 // Chrome Web Store item ID (32 letters a–p). While empty, the "Leave a review" button stays hidden.
-window.CORNMUTE_ITEM_ID = '';
+window.CORNMUTE_ITEM_ID = 'lfopphoeoalfglenhiknecgidffpiene';
 (function () {
   var id = window.CORNMUTE_ITEM_ID;
   if (!/^[a-p]{32}$/.test(id)) return;

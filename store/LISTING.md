@@ -1,6 +1,6 @@
 # CornMute – Chrome Web Store listing (copy & paste)
 
-Upload file: `release/cornmute-v1.0.3.zip`
+Upload file: `release/cornmute-v1.0.4.zip`
 
 ---
 

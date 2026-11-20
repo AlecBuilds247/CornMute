@@ -202,7 +202,8 @@ try {
     assert.equal(await p.evaluate(() => document.activeElement.id), 'domain');
     assert.equal(await p.title(), 'CornMute – Muted sites');
     assert.equal(await p.getAttribute('#xLink', 'href'), 'https://x.com/AlecBuilds247');
-    assert.equal(await p.isVisible('#reviewBit'), false, 'review link hidden until item ID is set');
+    assert.equal(await p.isVisible('#reviewBit'), true, 'review link shown once item ID is set');
+    assert.equal(await p.getAttribute('#reviewLink', 'href'), 'https://chromewebstore.google.com/detail/lfopphoeoalfglenhiknecgidffpiene/reviews');
     await p.close();
   });
 } finally {

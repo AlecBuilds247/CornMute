@@ -2,7 +2,7 @@
 
 // Chrome Web Store item ID (32 letters a–p), from the developer dashboard URL.
 // While it's empty, the "Leave a review" link stays hidden.
-export const STORE_ITEM_ID = '';
+export const STORE_ITEM_ID = 'lfopphoeoalfglenhiknecgidffpiene';
 
 export const LINKS = {
   privacy: 'https://alecbuilds247.github.io/cornmute-site/privacy.html',
