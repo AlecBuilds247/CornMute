@@ -183,12 +183,14 @@ try {
     await p.waitForFunction(() => !document.getElementById('status').textContent.includes('Checking'));
     assert.match(await p.textContent('#shortcut'), /M/);
     assert.match(await p.textContent('#count'), /\d/);
-    assert.match(await p.textContent('#status'), /Watching \d{2},\d{3} adult sites/);
+    assert.equal((await p.textContent('#status')).trim(), 'Nothing to mute here');
+    assert.equal(await p.isVisible('#toggleTab'), false, 'no Mute button on extension pages');
     assert.equal(await p.isVisible('#incogHint'), true, 'Incognito hint should show while Incognito is off');
     assert.match(await p.textContent('#incogHint'), /Click “Fix”/);
     assert.equal(await p.isVisible('#review'), false, 'review link hidden while item ID is a placeholder');
     assert.equal(await p.getAttribute('#privacyLink', 'href'), 'https://alecbuilds247.github.io/cornmute-site/privacy.html');
-    assert.equal(await p.getAttribute('.xLink', 'href'), 'https://x.com/AlecBuilds247');
+    assert.equal((await p.textContent('#privacyLink')).trim(), 'Privacy Policy');
+    assert.equal(await p.locator('.credits a').count(), 1);
     assert.match(await p.textContent('#openSites'), /Muted sites/);
     await p.close();
   });
@@ -199,6 +201,8 @@ try {
     assert.equal(await p.inputValue('#domain'), 'video.some-site.test');
     assert.equal(await p.evaluate(() => document.activeElement.id), 'domain');
     assert.equal(await p.title(), 'CornMute – Muted sites');
+    assert.equal(await p.getAttribute('#xLink', 'href'), 'https://x.com/AlecBuilds247');
+    assert.equal(await p.isVisible('#reviewBit'), false, 'review link hidden until item ID is set');
     await p.close();
   });
 } finally {

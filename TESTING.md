@@ -12,8 +12,8 @@
 - [ ] Pin CornMute to the toolbar (puzzle icon → pin).
 - [ ] Open the demo page: `https://alecbuilds247.github.io/cornmute-site/demo.html`
       *(not uploaded yet? use `youtube.com` as your test site instead in the steps below — any harmless site with sound works)*
-- [ ] Popup says **✓ Watching 46,987 adult sites** / "This site isn't one of them". Click **Missing an adult site? Add it to your list →**: Muted sites page opens with the demo site filled in. Click **Add**.
-- [ ] Reload the demo tab: muted; popup says **Muted: this site is on your list**.
+- [ ] Popup says **This site plays normally** / "It's not one of the 46,987 adult sites CornMute mutes." Click **Missing an adult site? Add it to your list →**: Muted sites page opens with the demo site filled in. Click **Add**.
+- [ ] Reload the demo tab: muted; popup says **Muted: on your list**.
 - [ ] Click **Play test tone**: silence. Popup counter went up by 1.
 - [ ] Reload + play 2 more times (counter reaches 3): no review link yet, because the store item ID isn't filled in. (Once it is: "Enjoying CornMute? Leave a review ★" appears; × hides it for good.)
 - [ ] Press **Option+Shift+M**: tone becomes audible. Reload: stays unmuted.
@@ -22,7 +22,8 @@
 - [ ] In the popup, turn CornMute **off**: muted demo tabs unmute instantly. Turn it back **on**.
 - [ ] Open an **Incognito** window → demo page: muted. Popup shows Incognito **On**.
 - [ ] **Muted sites** → "Is a site covered?" box: type `sex.com` → ✓ built-in. Type `sussex.ac.uk` → not covered. (Typing a name is fine; no need to visit.)
-- [ ] Popup footer: **Privacy** opens the privacy page; **@AlecBuilds247** and **Tell me** open your X profile.
+- [ ] Popup on a new tab page: **Nothing to mute here**, no Mute button.
+- [ ] Popup footer: only **Privacy Policy** (opens the privacy page). Muted sites page footer: **Privacy Policy · Made by @AlecBuilds247** (review link appears there once the store item ID is set).
 - [ ] Popup → **Muted sites**: paste `https://www.example.com/some/page` → it adds `example.com`. Remove it.
 - [ ] On `google.com`, popup → **Mute this tab**. Then go to another normal site in that tab: it **stays muted** (CornMute never undoes your own mutes).
 

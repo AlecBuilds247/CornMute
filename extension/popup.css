@@ -1,12 +1,12 @@
 body { width: 320px; padding: 12px; display: grid; gap: 10px; }
 header { display: flex; align-items: center; gap: 8px; font-size: 16px; }
 header strong { flex: 1; }
-/* Fixed-height status block so the card doesn't jump between states */
-.status-block { min-height: 54px; margin-bottom: 10px; }
+.status-block { margin-bottom: 10px; }
+#tabCard.no-button .status-block { margin-bottom: 0; }
 .status { font-weight: 650; line-height: 1.3; }
 .sub { font-size: 12.5px; margin-top: 3px; line-height: 1.35; }
 button.wide { width: 100%; }
-.add-row { min-height: 20px; margin-top: 7px; text-align: center; }
+.add-row { margin-top: 8px; text-align: center; }
 button.link.small, .review a { font-size: 12px; }
 .counter { text-align: center; padding: 10px; }
 .big { font-size: 30px; font-weight: 800; color: var(--corn-dark); line-height: 1.1; }

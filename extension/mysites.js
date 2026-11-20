@@ -1,5 +1,5 @@
 import { cleanDomain } from './domains.js';
-import { LINKS } from './config.js';
+import { LINKS, reviewUrl } from './config.js';
 
 const $ = (id) => document.getElementById(id);
 const send = (msg) => chrome.runtime.sendMessage(msg);
@@ -52,7 +52,9 @@ $('addForm').addEventListener('submit', async (e) => {
 });
 
 $('privacyLink').href = LINKS.privacy;
-for (const a of document.querySelectorAll('.xLink')) a.href = LINKS.x;
+$('xLink').href = LINKS.x;
+// Review link is always shown here once the store item ID is set (hidden until then: no dead link).
+if (reviewUrl()) { $('reviewLink').href = reviewUrl(); $('reviewBit').hidden = false; }
 
 // Opened from the popup's "Missing an adult site?" link: prefill and focus the add box.
 const prefill = cleanDomain(new URLSearchParams(location.search).get('add'));

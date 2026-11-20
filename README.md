@@ -24,4 +24,6 @@ Dev: `npm test` · `npm run test:e2e` · `npm run build` (writes the release ZIP
 
 Logo: `assets/logo-full.png` is the master (made by Alec, owned by him). Icons in `extension/icons/` and `site/` are exports of it.
 
-Store item ID (for the review link): set `STORE_ITEM_ID` in `extension/config.js`. Empty = review link hidden.
+Store item ID (for the review links): set `STORE_ITEM_ID` in `extension/config.js` AND `window.CORNMUTE_ITEM_ID` in `site/config.js`. Empty = review links hidden.
+
+`store/popup-states.png` is a preview of every popup state (not a store asset).

@@ -15,14 +15,16 @@ function render(info) {
   $('count').textContent = info.count.toLocaleString('en-US');
 
   const copy = statusCopy(info, shortcut);
-  $('status').textContent = (copy.icon ? copy.icon + ' ' : '') + copy.title;
+  $('status').textContent = copy.title;
   $('statusSub').textContent = copy.sub;
 
   $('toggleTab').textContent = info.muted ? 'Unmute this tab' : 'Mute this tab';
-  $('toggleTab').disabled = !tab;
+  $('toggleTab').hidden = !copy.showButton || !tab;
+  $('tabCard').classList.toggle('no-button', $('toggleTab').hidden);
 
   const domain = info.host ? cleanDomain(info.host) : null;
   $('addLink').hidden = !(copy.addLink && domain);
+  $('addRow').hidden = $('addLink').hidden;
   $('addLink').dataset.domain = domain || '';
 
   $('review').hidden = !shouldShowReview(info.count, reviewDismissed);
@@ -49,7 +51,6 @@ async function init() {
   $('shortcut').textContent = shortcut;
 
   $('privacyLink').href = LINKS.privacy;
-  for (const a of document.querySelectorAll('.xLink')) a.href = LINKS.x;
   const rUrl = reviewUrl();
   if (rUrl) $('reviewLink').href = rUrl;
 
